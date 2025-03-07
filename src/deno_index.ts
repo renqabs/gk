@@ -98,8 +98,11 @@ const handler = async (req: Request): Promise<Response> => {
   headers.set("Host", targetUrl.host);
   headers.delete("Referer");
   headers.delete("Cookie");
+  headers.delete("origin");
   headers.delete("Authorization"); // 删除验证头，不转发到目标服务器
   headers.set("cookie", COOKIE || '');
+  headers.set("origin", TARGET_URL);
+  headers.set("Referer", `${TARGET_URL}/?referrer=website`);
 
   try {
     const proxyResponse = await fetch(targetUrl.toString(), {
